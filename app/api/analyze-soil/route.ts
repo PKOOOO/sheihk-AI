@@ -4,7 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 import type { Prisma } from "../../generated/prisma/client";
 
 const soilAnalysisSchema = z.object({
-  soilType: z.string().describe("Overall soil type, e.g. loam, sandy loam."),
+  soilType: z.string().describe("Overall soil type, e.g. loam, sandy loam. etc"),
   estimatedPhRange: z
     .string()
     .describe("Estimated pH range, e.g. 5.5-6.5, in text form."),

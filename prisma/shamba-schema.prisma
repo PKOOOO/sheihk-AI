@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Farmer {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  location           String?
+  phone              String?
+  farmSize           Float?    @map("farm_size")
+  primaryCrops       String[]  @map("primary_crops")
+  languagePreference String?   @map("language_preference")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  soilAnalyses       SoilAnalysis[]
+  diseaseDetections  DiseaseDetection[]
+  chatSessions       ChatSession[]
+
+  @@map("farmers")
+}
+
+model SoilAnalysis {
+  id        Int      @id @default(autoincrement())
+  farmerId  Int?     @map("farmer_id")
+  imageUrl  String?  @map("image_url")
+  result    Json     @map("result")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  farmer Farmer? @relation(fields: [farmerId], references: [id])
+
+  @@map("soil_analyses")
+}
+
+model DiseaseDetection {
+  id        Int      @id @default(autoincrement())
+  farmerId  Int?     @map("farmer_id")
+  imageUrl  String?  @map("image_url")
+  cropType  String?  @map("crop_type")
+  result    Json     @map("result")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  farmer Farmer? @relation(fields: [farmerId], references: [id])
+
+  @@map("disease_detections")
+}
+
+model ChatSession {
+  id            Int      @id @default(autoincrement())
+  farmerId      Int?     @map("farmer_id")
+  summary       String
+  messagesCount Int      @map("messages_count")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  farmer Farmer? @relation(fields: [farmerId], references: [id])
+
+  @@map("chat_sessions")
+}
+
